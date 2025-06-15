@@ -1,0 +1,6 @@
+*.x 
+*data 
+*.git
+*.vscode 
+*.ipynb_checkpoints
+*.history

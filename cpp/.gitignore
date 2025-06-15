@@ -2,4 +2,4 @@
 *.git 
 *.vscode 
 *.history 
-*./data
+/data/*.txt
