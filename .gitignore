@@ -12,3 +12,8 @@ data/
 
 # Ignore local history
 .history/
+
+# Ignore PDF files 
+
+.pdf 
+
