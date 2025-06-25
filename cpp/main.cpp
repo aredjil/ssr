@@ -7,7 +7,6 @@
 /**
  * This file contains the implementation of a branching process
  * where mu balls start at state N and split as they cascade down
- * NOTE: refactor the code
  */
 
 // Random seed to be used globally 
@@ -22,7 +21,7 @@ int get_next_state(int lower_bound, int upper_bound)
     return dist(gen);
 }
 // The main simulation function
-int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed = dv())
+inline int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed = dv())
 {
     
     std::vector<int> balls; // A vector to keep track of the states of the 
@@ -64,7 +63,7 @@ int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const i
                                          // The states of the newly generated elements
         for (int current_state : balls) // For existing balls 
         {
-            std::cout << current_state << "\n"; // Output the current state of the elemnt 
+            // std::cout << current_state << "\n"; // Output the current state of the elemnt 
             int next_state; // Variable to hold the value of the next state 
             if (current_state > 1) // Process only elements that are in state
             {                     // different than the gound state, here it is 1 
@@ -97,7 +96,7 @@ int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const i
         balls = new_balls; // Update the balls vector 
     }
     //  std::cout<< s_size << std::endl;     // Print the avalanche size
-    //  std::cout<<duration<<"\n";    //  Print the duration of the process
+     std::cout<<duration<<"\n";    //  Print the duration of the process
 
     return 0;
 }

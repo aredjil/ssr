@@ -1,0 +1,14 @@
+plot:
+  input: "./data/figure3/input"
+  Ns: [200, 400, 600, 800]
+  markers: ["o", "s", ".", "^"]
+  colors: ['blue', 'green', 'black', 'blue']
+  special_facecolor_index: 2
+  x_label: 'Multiplicative parameter $\mu$'
+  y_label: 'Average size $<s>$'
+  x_scale: 'linear'
+  y_scale: 'log'
+  figsize: [5, 5]
+  save: 
+  show: true
+  output: './figures/figure3/average_size.png'

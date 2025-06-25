@@ -1,5 +1,15 @@
-*.x 
-*.git 
-*.vscode 
-*.history 
+# Ignore all .x files (executables, typically)
+*.x
+
+# Do NOT ignore .git — it's essential for Git to work!
+# Remove this line:
+# *.git
+
+# Ignore .vscode folder (VS Code settings)
+.vscode/
+
+# Ignore .history folder
+.history/
+
+# Ignore all .txt files inside the data directory
 /data/*.txt
