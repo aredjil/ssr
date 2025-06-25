@@ -13,3 +13,5 @@
 
 # Ignore all .txt files inside the data directory
 /data/*.txt
+
+*.pdf   
