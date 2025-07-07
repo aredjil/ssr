@@ -1,0 +1,18 @@
+# Ignore compiled executables
+*.x
+
+# Ignore data directory
+data/
+
+# Ignore VS Code config
+.vscode/
+
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Ignore local history
+.history/
+
+# Ignore PDF files 
+
+papers/
