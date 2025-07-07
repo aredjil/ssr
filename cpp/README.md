@@ -3,7 +3,7 @@
 
 Sample space reducing process (SSR) is a stochastic process defined by a shrinking sample space, this processes models ageing, in a sense that with each iteration of the process the space of possible states available to the process is reduced. More concretly, let there be in total $N$ possible states available to the SSR element, it starts at the highest state $i=N$, then with uniform probability $Pr(i \rightarrow j)=\frac{1}{N}$ it jumps to any of the lower states $j \in \{1, \dots, N-1\}$. The only rule is that the object is only allowed to jump to lower states, backward jumps are forbiden in this case. Once the element reaches the lowest state $1$ the process either stops or restarts [[1](https://www.nature.com/articles/s41598-017-09836-4#auth-Stefan-Thurner-Aff1-Aff2-Aff3-Aff4)].
 
-![](./std_ssr.gif)
+![](./results/figures/gif/std_ssr.gif)
 
 
 It has been showen that the number of visits per state $Pr(s=i)$ follows Zipf's law $Pr(s=i) \propto i^{-1}$ [[2](https://www.pnas.org/doi/10.1073/pnas.1420946112)]
