@@ -23,8 +23,6 @@ https://www.nature.com/articles/s41598-017-09836-4#auth-Stefan-Thurner-Aff1-Aff2
 """
 
 
-# TODO: Clean the code and fit the data using  red dashed line 
-# TODO: Rename the source file, main.py is very generic. name it plot_<something>.py (e.g, avalanche_size.py ?)  
 def load_config(path):
     with open(path, "r") as f:
         return yaml.safe_load(f)
@@ -32,7 +30,7 @@ def load_config(path):
 def plot_fig(cfg):
     # Default configuration 
     plot_defaults = {
-    "plot":{"input": "./data/figure3/input", # Dir that stores the avalanche sizes per N and diff mu values  
+    "plot":{"input": "./data/raw/figure3/input", # Dir that stores the avalanche sizes per N and diff mu values  
     "Ns": [200, 400, 600, 800],  # Number of states used in generating the observations
     "markers": ["o", "s", ".", "^"], # Mathcing markers with the original paper  
     "colors": ["blue", "green", "black", "blue"], # Matching colors with the original paper 
@@ -44,14 +42,14 @@ def plot_fig(cfg):
     "figsize": [5, 5],
     "save": True,
     "show": True,
-    "output": "./figures/figure3/average_size.png" # Output file relative path 
+    "output": "./results/figures/figure3/average_size.png" # Output file relative path 
     }
     } 
     # If the configuration file is not provided resort to the default settings   
     if cfg == None:
         cfg = plot_defaults
     # Getting the variables from the configuration file 
-    input, Ns, markers, colors, special_idx, x_label, y_scale, y_label, scale, figsize, output_path = map(lambda k: cfg["plot"].get(k),
+    input, Ns, markers, colors, special_idx, x_label, y_label, scale, y_scale, figsize, output_path = map(lambda k: cfg["plot"].get(k),
                                                                   ["input",
                                                                     "Ns", 
                                                                    "markers", 
@@ -92,7 +90,7 @@ def plot_fig(cfg):
         plt.xlabel(r"{0}".format(x_label))
         plt.ylim(10E0, )
         plt.xlim(mus[0], mus[-1])
-        plt.legend(loc="best")
+        plt.legend(loc="best", title="Number of states", edgecolor="black", frameon=True)
     plt.tight_layout()
     # Save the figure 
     if save:

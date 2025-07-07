@@ -1,0 +1,27 @@
+figure: results/figures/figure3/average_size.png
+generated_by: scripts/py/plot_average_avalanche_sizes.py
+description: Plot of frequency of visits per state 
+
+plotting:
+  script: scripts/py/plot_average_avalanche_sizes.py
+
+data_generation:
+  binary: bin/cascade_ssr.x
+  command_template: "./bin/cascade_ssr.x --mu {mu} --N 1E4 --m 1E6"
+  parameters:
+    mu:
+      start_exp: 0.2
+      end_exp: 0.5
+      num_points: 20
+    trials: 1E6
+
+runs:
+  - number of states: 200
+    input_file: ./data/figure3/input_200.txt
+  - number of states: 400
+    input_file: ./data/figure3/input_400.txt
+  - number of states: 600
+    input_file: ./data/figure3/input_600.txt
+  - number of states: 800
+    input_file: ./data/figure3/input_800.txt
+

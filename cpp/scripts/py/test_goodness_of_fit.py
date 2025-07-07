@@ -70,15 +70,17 @@ def get_p_val(data:np.ndarray, xmin:int, alpha:float, empirical_ks:float,n:int, 
 
 
 def main():
-    for mu in [2.0]:
+    for mu in [1.0]:
         desired_precison = float(0.1)
         n_sims = int(0.25 / (desired_precison * desired_precison)) 
-        filename = f"./data/figure1/input_{mu}.txt"
+        # filename = f"./data/figure1/input_{mu}.txt"
+        filename = f"./data/zipf/ssr_1.0.txt"
         print(f"Processing file {filename}")
         data = np.loadtxt(filename, dtype=int)
 
-        n = int(1E3)
-        data = data[:n]  
+        # n = int()
+        # data = data[:n]
+        n = 3000  
         # Using only the first 1000 points of the simulation to test the goodness of fit  
         print(f"Testing the power law fittness using {n} data points")
         with suppress_stdout():

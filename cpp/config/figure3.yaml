@@ -11,4 +11,4 @@ plot:
   figsize: [5, 5]
   save: 
   show: true
-  output: './figures/figure3/average_size.png'
+  output: './results/figures/figure3/average_size.png'

@@ -11,7 +11,7 @@ def main():
     ax = ax.flatten()
 
     for i, mu in enumerate([1.5, 2.0, 2.5, 3.0]):
-        data = np.loadtxt(f"./data/avalanche_sizes/results_{mu}.txt", dtype=int)
+        data = np.loadtxt(f"./data/raw/avalanche_sizes/results_{mu}.txt", dtype=int)
 
         counts, bin_edges = np.histogram(data, bins=34, density=False)
         bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2

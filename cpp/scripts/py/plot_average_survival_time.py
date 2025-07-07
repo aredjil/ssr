@@ -29,7 +29,7 @@ def main():
         mus = np.arange(1.5, 3.1, 0.1)
         for mu in mus:
             mu = round(mu, 3)
-            data = np.loadtxt(f"./data/durations/data_{N}_{mu}.txt", dtype=int)
+            data = np.loadtxt(f"./data/raw/durations/data_{N}_{mu}.txt", dtype=int)
             y.append(data.mean())
         plt.plot(mus, y, linestyle="None", marker=markers[i],markerfacecolor='none', markersize=8, markeredgecolor=colors[i],
                 label=f"N={N}")

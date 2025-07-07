@@ -1,0 +1,21 @@
+figure: results/noisy_ssr/noisy_ssr.png
+generated_by: scripts/py/plot_noisy_ssr.py
+description: Plot of frequency of visits per state 
+
+plotting:
+  script: scripts/py/plot_noisy_ssr.py.py
+
+data_generation:
+  binary: bin/noisy_ssr.x
+  command_template: "./bin/noisy_ssr.x --l {lambda} --n 1E4 --m 1E6"
+  parameters:
+    n_states: 1E4
+    trials: 1E6
+
+runs:
+  - lambda: 0.5
+    input_file: ./data/raw/noisy_ssr/output_0.5.txt
+  - lambda: 0.7
+    input_file: ./data/raw/noisy_ssr/output_0.7.txt
+  - lambda: 1.0
+    input_file: ./data/raw/noisy_ssr/output_1.0.txt

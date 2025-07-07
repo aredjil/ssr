@@ -11,7 +11,7 @@ def main():
     for i, mu in enumerate([1.0, 1.5, 2.0, 2.5]):
         fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(5, 5))
         # Load the data 
-        data = np.loadtxt(f"./data/durations/data_{mu}.txt", dtype=int)
+        data = np.loadtxt(f"./data/raw/durations/data_{mu}.txt", dtype=int)
         # Get the counts and bin_edges 
         counts, bin_edges = np.histogram(data, bins=20, density=False)
         bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2

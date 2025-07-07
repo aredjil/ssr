@@ -1,0 +1,34 @@
+figure: results/figures/figure3/average_size.png
+generated_by: scripts/py/plot_state_frequencies.py
+description: Plot of frequency of visits per state 
+
+plotting:
+  script: scripts/py/plot_state_frequencies.py
+  # date: 2025-07-07
+processing:
+  script: scripts/py/convert_dataset.py 
+
+data_generation:
+  binary: bin/cascade_ssr.x
+  command_template: "./bin/std_ssr.x --mu {mu} --N 1E4 --m 1E6"
+  parameters:
+    n_states: 1E4
+    trials: 1E6
+
+runs:
+  - mu: 0.5
+    input_file: data/raw/figure1/input_0.5.txt
+    processed_file: data/processed/hdf5/data_0.5.h5
+  - mu: 1.0
+    input_file: data/raw/figure1/input_1.0.txt
+    processed_file: data/processed/hdf5/data_1.0.h5
+  - mu: 1.5
+    input_file: data/raw/figure1/input_1.5.txt
+    processed_file: data/processed/hdf5/data_1.5.h5
+  - mu: 2.0
+    input_file: data/raw/figure1/input_2.0.txt
+    processed_file: data/processed/hdf5/data_2.0.h5
+  - mu: 2.5
+    input_file: data/raw/figure1/input_2.5.txt
+    processed_file: data/processed/hdf5/data_2.5.h5
+
