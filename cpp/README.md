@@ -1,27 +1,37 @@
 # Sample Space Reducing Process 
 ## Standard Sample Space Reducing Process
 
-Sample space reducing process (SSR) is a stochastic process defined by a shrinking sample space. An object of the SSR starts at the highest state $i=N$, then with probability $Pr(i \rightarrow j)$ it jumps to any of the lower states $j \in \{1, \dots, N-1\}$. The only rule is that at any state the object is only allowed to jump to lower states, backward jumps are forbiden. Once the element reaches the lowest state $1$ the process either stops or restarts [[1](https://www.nature.com/articles/s41598-017-09836-4#auth-Stefan-Thurner-Aff1-Aff2-Aff3-Aff4)].
+Sample space reducing process (SSR) is a stochastic process defined by a shrinking sample space, this processes models ageing, in a sense that with each iteration of the process the space of possible states available to the process is reduced. More concretly, let there be in total $N$ possible states available to the SSR element, it starts at the highest state $i=N$, then with uniform probability $Pr(i \rightarrow j)=\frac{1}{N}$ it jumps to any of the lower states $j \in \{1, \dots, N-1\}$. The only rule is that the object is only allowed to jump to lower states, backward jumps are forbiden in this case. Once the element reaches the lowest state $1$ the process either stops or restarts [[1](https://www.nature.com/articles/s41598-017-09836-4#auth-Stefan-Thurner-Aff1-Aff2-Aff3-Aff4)].
 
 ![](./std_ssr.gif)
 
 
-It has been showen that the number of visits per state $Pr(s=i)$ follows Zipf's law $Pr(s=i) \propto i^{-1}$, how often a state is visted is inversly proptional to it's order [[1](https://www.nature.com/articles/s41598-017-09836-4#auth-Stefan-Thurner-Aff1-Aff2-Aff3-Aff4), [2](https://www.pnas.org/doi/10.1073/pnas.1420946112)]
+It has been showen that the number of visits per state $Pr(s=i)$ follows Zipf's law $Pr(s=i) \propto i^{-1}$ [[2](https://www.pnas.org/doi/10.1073/pnas.1420946112)]
 
 ![](./ssr_zipf.gif)
 
-To verify that numerically, I genrated $3000$ realizations of a full standard SSR process with $N=10000$ states (see: [`./data/zipf/ssr_1.0.txt`](./data/zipf/ssr_1.0.txt)), and used [`PowerLaw` package](https://github.com/schae234/powerlaw) written in `Python` to estimate the exponent of the power law, and found that the estimated exponent was $\hat{\alpha}=1.0$. with power law behavior starting from $x_{min}=27$. Similar were found results using [plfit](https://github.com/ntamas/plfit) commandline in `C`, where the estimated exponent was $\hat{\alpha}=1.3$ and $x_{min}=27$.
+![](./results/figures/std/std_ssr.png) 
+<!-- *Figure 1: This is the caption of the image.* -->
 
-> Both codes are based on the paper [Power-law distributions in empirical data](https://arxiv.org/abs/0706.1062), several more packages in other langauges could be found at the [powerlaw](https://aaronclauset.github.io/powerlaws/) provided by the authors. 
-## Stochastic Sample Space Reducing Process
+## Noisy Sample Space Reducing Process
+
+A varient of the SSR process is the so-called noisy SSR $\Phi$, where the SSR process $\phi$ is mixed with a completely random $\phi_R$ using a mixing ratio $\lambda \in [0, 1]$, such that  $\Phi^{(\lambda)} = \lambda\phi + (1- \lambda)\phi_R$. $\phi_R$ correspond to the completly random process where the element is allowed to jump to any state without restrictions. In this setting, the rule is, with probability $\lambda$ jump downward following the standard SSR process, and with probability $1-\lambda$ jump to any of the $N$ states. it has been showen that the number of state visits follows a power law where the exponent is the mixing ratio $\lambda$. [[2](https://www.pnas.org/doi/10.1073/pnas.1420946112)]
+
+![](./results/figures/noisy_ssr/noisy_ssr.png)
+
+$\lambda = 0 $ corresponds to the unconstrained random walk, and $\lambda =1$ to the standard SSR. 
+<!-- *Figure 1: This is the caption of the image.* -->
 
 ## Cascade Sample Space Reducing Process 
  
+Anotehr varient of the SSR process is defined through a multiplicative factor $\mu$. At each jumping step the SSR element divides into $\mu$ element that in turn follow the SSR rules. it has been showen that the frequncy of visits per state follows a power law with an exponent equal to the value of the multiplicative factor $\mu$. $Pr(s=i) \propto i^{-\mu}$. when $\mu$ is a fractional number such that $\mu = \left\lfloor \mu \right\rfloor + \delta$ then with probability $\delta$, $\left\lfloor \mu \right\rfloor + 1$ elements are created, and with probability $1-\delta$, $\left\lfloor \mu \right\rfloor$ elements are created. 
 
-This read me will contain instructions on: 
-- [ ] Code description :) 
-- [ ] How to run the code 
-- [ ] How to regenerate the observations 
-- [ ] How to visulize the results 
-- [ ] Possible code optimizations ? 
+![](./results/figures/gif/casecade_ssr.gif)
 
+
+It has been showen that the distrubution of visits follows a power law with an exponent $\mu$, $Pr(s=i) \propto i^{-\mu}$ [[1](https://www.nature.com/articles/s41598-017-09836-4#auth-Stefan-Thurner-Aff1-Aff2-Aff3-Aff4)].  
+
+![](./results/figures/figure1/state_visits_relative_frequency.png) 
+
+
+<!-- Add the valanche size figure -->
