@@ -2,18 +2,20 @@
 
 # This script fits the data and save the result to a text file in the working directory 
 import numpy as np 
-import powerlaw 
 import contextlib
 import sys
 import os
 import matplotlib.pyplot as plt 
 import h5py
+from pathlib import Path 
 """
 This python script reproduces the figure 1 from the paper based on the data input_mu.txt
 """
 
 def main():
-    obs_dir = "./data/processed/hdf5/data_"
+    root_path = Path(__file__).resolve().parent.parent.parent
+    out_filename = root_path / "results" / "figures" / "figure1" / "state_visits_relative_frequency.png"
+    obs_dir = root_path / "data" / "processed" / "hdf5" / "data_"
     markers = [
                 "s",
                 "*", 
@@ -27,9 +29,7 @@ def main():
               "black", 
               "red", 
               ]
-    
     fig, axis = plt.subplots(nrows=1, ncols=1, figsize=(5, 5))
-
     for i, mu in enumerate([0.5, 
                             1.0, 
                             1.5, 
@@ -38,12 +38,12 @@ def main():
                             # 3.0
                             ]
                             ):
-        filename = f"{obs_dir}{mu}.h5"
-        if not os.path.exists(filename):
-            print(f"File {filename} does not exist.")
+        in_filename = obs_dir / f"{mu}.h5"
+        if not os.path.exists(in_filename):
+            print(f"File {in_filename} does not exist.")
             # pass 
         else:
-            with h5py.File(filename, "r") as f:
+            with h5py.File(in_filename, "r") as f:
                 unique = f["unique"][:]
                 unique_count = f["count"][:]
 
@@ -60,7 +60,8 @@ def main():
 
     # fig.suptitle("Frequency of Visits Per State")
     plt.tight_layout()
-    plt.savefig("./figures/figure1/state_visits_relative_frequency.png")
+    out_filename.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(out_filename)
     plt.show()
 
 if __name__== "__main__":

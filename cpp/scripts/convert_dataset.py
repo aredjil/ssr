@@ -2,6 +2,7 @@ import numpy as np
 import h5py
 import matplotlib.pyplot as plt
 from collections import Counter
+from pathlib import Path
 """
  This script converts the data from .txt files to .h5 files 
  This dramatically decreases the size of the files 
@@ -9,8 +10,10 @@ from collections import Counter
  
 """
 def main():
+    root_path = Path(__file__).resolve().parent.parent
+    print(root_path)
     for mu in [0.5]:
-        filename = f"./data/figure1/input_{mu}.txt"
+        filename = root_path / "data" / "figure1" / f"input_{mu}.txt"
         counter = Counter()
         
         # Read and count in chunks

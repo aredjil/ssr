@@ -19,7 +19,7 @@ int main(int argc, char **argv)
         std::string arg = argv[i];
         if (arg == "--n" && i + 1 < argc)
         {
-            n = std::atoi(argv[++i]);
+            n = std::atoi(argv[++i]) + 1;
         }
         else if (arg == "--m" && i + 1 < argc)
         {

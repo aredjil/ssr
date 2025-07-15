@@ -4,15 +4,17 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
 from scipy.stats import gamma
+from pathlib import Path 
 
 def main():
+    root_path = Path(__file__).resolve().parent.parent.parent
     x_lims = [1, 10E1, 10E3, 10E5]
     fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(8, 8))
     ax = ax.flatten()
-
     for i, mu in enumerate([1.5, 2.0, 2.5, 3.0]):
-        data = np.loadtxt(f"./data/raw/avalanche_sizes/results_{mu}.txt", dtype=int)
-
+        in_filename = root_path /"data"/ "raw" / "avalanche_sizes" /f"results_{mu}.txt"
+        out_filename = root_path / "results" / "figures" / f"avalanche_sizes_{mu}.png"
+        data = np.loadtxt(in_filename, dtype=int)
         counts, bin_edges = np.histogram(data, bins=34, density=False)
         bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
         bin_width = bin_edges[1] - bin_edges[0]
@@ -37,11 +39,12 @@ def main():
         ax[i].set_yscale("log")
         ax[i].set_xlim(x_lims[i], )
         ax[i].set_ylim(1, 10E2)
-        ax[i].legend(loc="best")
+        ax[i].legend(loc="best", shadow=True, frameon=True, edgecolor="black")
         # plt.grid(True)
     fig.suptitle("Avalanche size distribution")
     plt.tight_layout()
-    plt.savefig(f"./figures/avalanche_sizes_{mu}.png")
+    out_filename.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(out_filename)
     plt.show()
 if __name__ == "__main__":
     main()

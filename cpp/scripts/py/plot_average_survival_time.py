@@ -3,7 +3,7 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
 from matplotlib.ticker import NullFormatter, FixedLocator
-
+from pathlib import Path 
 
 def main():
     # Iterate over the data files that contain the observations 
@@ -21,6 +21,9 @@ def main():
         "green", 
         "black"
     ] 
+    root_path = Path(__file__).resolve().parent.parent.parent
+    
+    out_filename = root_path / "results" / "figures" / "durations" / "average_duration.png"
     plt.figure(figsize=(5, 5))
     xticks = [10**0.2, 10**0.5]
     xtick_labels = [r'$10^{0.2}$', r'$10^{0.5}$']
@@ -29,10 +32,13 @@ def main():
         mus = np.arange(1.5, 3.1, 0.1)
         for mu in mus:
             mu = round(mu, 3)
-            data = np.loadtxt(f"./data/raw/durations/data_{N}_{mu}.txt", dtype=int)
+            in_filename = root_path / "data" / "raw" / "durations" / f"data_{N}_{mu}.txt"
+            data = np.loadtxt(in_filename, dtype=int)
             y.append(data.mean())
         plt.plot(mus, y, linestyle="None", marker=markers[i],markerfacecolor='none', markersize=8, markeredgecolor=colors[i],
                 label=f"N={N}")
+        plt.plot(mus, y, color="tab:red", alpha=0.6, ls="--")
+
     plt.xscale("log")
     plt.yscale("log")
     plt.xticks(xticks, xtick_labels)
@@ -44,7 +50,7 @@ def main():
     plt.ylabel(f"Average cascade Survival Time <$\Delta$ t>")
     plt.legend(loc="best", shadow=True)
     plt.tight_layout()
-    plt.savefig("./figures/durations/average_duration.png")
+    plt.savefig(out_filename)
     plt.show()
 if __name__ == "__main__":
     main()
