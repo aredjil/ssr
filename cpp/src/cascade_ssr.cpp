@@ -13,6 +13,60 @@
 std::random_device dv;
 // Pseudo random number geenrator
 std::mt19937_64 gen(dv());
+int get_next_state(int lower_bound, int upper_bound);
+
+
+inline int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed = dv());
+
+
+int main(int argc, char **argv)
+{
+
+    // Default paramters
+    // All of them can be passed through commandline
+    // First we start by setting up the number of states
+    int N{10'001}; // number of states +1
+    // Then we set up the number of iterations
+    int max_iter{3000}; // This is a good number of iteration to estimate the p-value
+    // Set up the   branching factor (mu) as a float
+    float mu{1.0f};
+
+    // Get the number of states, maximum iterations, and mu from the command line
+    for (int i = 0; i < argc; i++) // CHeck the case when the args are not in the options
+    {
+        if (std::string(argv[i]) == "--n" && i + 1 < argc)
+        {
+            // Casting the argument allows me to pass the number of states in scientific notation
+            // For example as: --n 10E4 :)
+
+            N = static_cast<int>(std::atof(argv[++i])) + 1;
+        }
+        if (std::string(argv[i]) == "--m" && i + 1 < argc)
+        {
+            // Casting the argument allows me to pass the number of restarts in scientific notation
+            // For example as 10E6 :)
+            max_iter = static_cast<int>(std::atof(argv[++i]));
+        }
+        if (std::string(argv[i]) == "--mu" && i + 1 < argc)
+        {
+            mu = std::atof(argv[++i]);
+        }
+    }
+
+    /**
+     *
+     * This commented lines are for making the code more compact without using
+     * scripts to run the code
+     */
+
+    for (int i = 0; i < max_iter; ++i)
+    {
+        ssr_casc(N, max_iter, mu);
+    }
+    return 0;
+}
+
+
 // Generates a random next state
 int get_next_state(int lower_bound, int upper_bound)
 {
@@ -21,7 +75,7 @@ int get_next_state(int lower_bound, int upper_bound)
     return dist(gen);
 }
 // The main simulation function
-inline int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed = dv())
+inline int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed)
 {
 
     std::vector<int> balls; // A vector to keep track of the states of the
@@ -103,52 +157,5 @@ inline int ssr_casc(const int &n_states, const int &max_iter, const double &mu, 
     //  std::cout<< s_size << std::endl;     // Print the avalanche size
     //  std::cout<<duration<<"\n";    //  Print the duration of the process
 
-    return 0;
-}
-
-int main(int argc, char **argv)
-{
-
-    // Default paramters
-    // All of them can be passed through commandline
-    // First we start by setting up the number of states
-    int N{10'001}; // number of states +1
-    // Then we set up the number of iterations
-    int max_iter{3000}; // This is a good number of iteration to estimate the p-value
-    // Set up the   branching factor (mu) as a float
-    float mu{1.0f};
-
-    // Get the number of states, maximum iterations, and mu from the command line
-    for (int i = 0; i < argc; i++) // CHeck the case when the args are not in the options
-    {
-        if (std::string(argv[i]) == "--n" && i + 1 < argc)
-        {
-            // Casting the argument allows me to pass the number of states in scientific notation
-            // For example as: --n 10E4 :)
-
-            N = static_cast<int>(std::atof(argv[++i])) + 1;
-        }
-        if (std::string(argv[i]) == "--m" && i + 1 < argc)
-        {
-            // Casting the argument allows me to pass the number of restarts in scientific notation
-            // For example as 10E6 :)
-            max_iter = static_cast<int>(std::atof(argv[++i]));
-        }
-        if (std::string(argv[i]) == "--mu" && i + 1 < argc)
-        {
-            mu = std::atof(argv[++i]);
-        }
-    }
-
-    /**
-     *
-     * This commented lines are for making the code more compact without using
-     * scripts to run the code
-     */
-
-    for (int i = 0; i < max_iter; ++i)
-    {
-        ssr_casc(N, max_iter, mu);
-    }
     return 0;
 }
