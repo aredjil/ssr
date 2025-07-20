@@ -16,3 +16,9 @@ data/
 # Ignore PDF files 
 
 papers/
+
+# Ignore build folder 
+
+build/
+
+*.so
