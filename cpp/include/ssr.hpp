@@ -5,9 +5,9 @@
 #include <cstdint>
 
 class SSR{
-    private:
-        std::mt19937 gen;
-        std::uniform_real_distribution<float> dis;
+    // private:
+        // std::mt19937 gen;
+        // std::uniform_real_distribution<float> dis;
 
         // std::random_device dv;
     

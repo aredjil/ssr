@@ -54,7 +54,7 @@ def main():
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.xlim(mus[0], mus[-1])
-    plt.ylim(1e1, )  # adjust if needed
+    plt.ylim(1e1, 1e5)  # adjust if needed
 
     ax = plt.gca()
     ax.xaxis.set_minor_locator(FixedLocator([]))

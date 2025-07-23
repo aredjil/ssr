@@ -5,6 +5,9 @@
 #include <vector>
 #include <string>
 #include <random>
+#include <cstdlib> 
+#include<chrono>
+#include <fstream>
 
 int main(int argc, char **argv)
 {
@@ -22,7 +25,7 @@ int main(int argc, char **argv)
         }
         else if (arg == "--m" && i + 1 < argc)
         {
-            max_iter = std::atoi(argv[++i]);
+            max_iter = static_cast<int>(std::stod(argv[++i]));
         }
         else if (arg == "--mu" && i + 1 < argc)
         {
@@ -30,20 +33,23 @@ int main(int argc, char **argv)
         }
     }
 
-    std::random_device dv;
-    uint64_t seed = dv();
-
-    SSR simulator(seed);
-
-    std::vector<std::vector<int>> all_results;
-    all_results.reserve(max_iter);
+    // SSR object 
+    SSR simulator;
+    // Results vector that will hold the values of the state label 
+    std::vector<int> results;
 
     for (int i = 0; i < max_iter; ++i)
     {
-        all_results.push_back(simulator.ssr_casc(N, mu));
+        results=simulator.ssr_casc(N, mu);
+        for(auto e:results)
+        {
+            std::cout<<e<<"\n";
+        }
+        std::cout.flush();
+        results.clear();
+
     }
 
-    // Optionally print or analyze all_results here
 
     return 0;
 }

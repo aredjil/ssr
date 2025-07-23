@@ -1,27 +1,13 @@
-#include "../include/ssr.hpp"
+#include "../include/ssr.hpp" // The header for the ssr class 
+#include "../include/Random.hpp" // Header for generating random numbers  
 #include <iostream>
 #include <algorithm>
 #include <cmath>
 #include <string>
 #include <cstdint>
 
-// Default seed
-SSR::SSR() : gen(42), dis(0.0f, 1.0f)
-{
-}
-
-SSR::SSR(const uint64_t &seed)
-    : gen(seed), dis(0.0f, 1.0f)
-{
-}
-// Getting the next state from the list of availbale states: next_state in {sink_state, ..., current_state - 1}
-int SSR::get_next_state(const int &sink_state, const int &current_state)
-
-{
-    // std::cout << "get_next_state() \n";
-    return sink_state + gen() % (current_state - sink_state + 1);
-}
-
+// Default cnstructor 
+SSR::SSR(){}
 // Method to perform Standard SSR process
 std::vector<int> SSR::ssr_std(const int &n_states)
 {
@@ -31,7 +17,7 @@ std::vector<int> SSR::ssr_std(const int &n_states)
     int current_state{n_states};
     while (current_state > 1)
     {
-        int next_state = get_next_state(1, current_state - 1);
+        int next_state = Random::get<int>(1, current_state - 1);
         current_state = next_state;
         visited_states.push_back(current_state);
     }
@@ -46,15 +32,15 @@ std::vector<int> SSR::ssr_noisy(const int &n_states, const float &lam)
     int current_state{n_states};
     while (current_state > 1)
     {
-        float u = dis(gen);
+        float u = Random::get<float>(0.0f, 1.0f);
         int next_state;
         if (u < lam)
         {
-            next_state = this->get_next_state(1, current_state - 1);
+            next_state = Random::get<int>(1, current_state - 1);
         }
         else
         {
-            next_state = this->get_next_state(1, n_states - 1);
+            next_state = Random::get<int>(1, n_states - 1);
         }
         current_state = next_state;
         visited_states.push_back(current_state);
@@ -102,7 +88,7 @@ std::vector<int> SSR::ssr_casc(const int &n_states, const float &mu)
             if (current_state > 1)
             {
                 int num_new_balls = base_balls;
-                float u = this->dis(this->gen);
+                float u = Random::get<float>(0.0f, 1.0f);
                 if (u < decimal_part)
                 {
                     num_new_balls++;
@@ -110,7 +96,7 @@ std::vector<int> SSR::ssr_casc(const int &n_states, const float &mu)
 
                 for (int j = 0; j < num_new_balls; ++j)
                 {
-                    int next_state = this->get_next_state(1, current_state - 1);
+                    int next_state = Random::get<int>(1, current_state - 1);
                     new_balls.push_back(next_state);
                 }
             }

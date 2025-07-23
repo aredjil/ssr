@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 
+// TODO: Seprate the logic of the code to a class. Bind that class to python and test it there 
 /**
  * This file contains the implementation of a branching process
  * where mu balls start at state N and split as they cascade down
@@ -16,7 +17,7 @@ std::mt19937_64 gen(dv());
 int get_next_state(int lower_bound, int upper_bound);
 
 
-inline int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed = dv());
+int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed = dv());
 
 
 int main(int argc, char **argv)
@@ -75,7 +76,7 @@ int get_next_state(int lower_bound, int upper_bound)
     return dist(gen);
 }
 // The main simulation function
-inline int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed)
+int ssr_casc(const int &n_states, const int &max_iter, const double &mu, const int &seed)
 {
 
     std::vector<int> balls; // A vector to keep track of the states of the

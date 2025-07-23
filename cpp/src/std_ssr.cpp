@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <cstdint>
 
 std::random_device dv;
 // Pseudo random number geenrator
