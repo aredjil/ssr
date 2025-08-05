@@ -22,3 +22,4 @@ papers/
 build/
 
 *.so
+.ipynb_checkpoints
