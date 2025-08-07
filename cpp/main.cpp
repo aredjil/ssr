@@ -8,13 +8,12 @@
 #include <cstdlib> 
 #include<chrono>
 #include <fstream>
-#include <sstream> // For file system mangement 
-#include <iomanip> // To edit the name of the file dpending on the parameters 
+#include <sstream> 
 
 int main(int argc, char **argv)
 {
     int N = 10001;
-    int max_iter = 3000;
+    int max_iter = 1000000;
     float mu = 1.0;
 
     // Parse command line arguments
@@ -34,34 +33,24 @@ int main(int argc, char **argv)
             mu = std::atof(argv[++i]);
         }
     }
-    std::ostringstream oss;
-    oss << "ssr_mu_" << std::fixed << std::setprecision(2) << mu
-        << "_n_" << N
-        << "_m_" << max_iter << ".txt";
-    std::string output_file = oss.str();
-    
-    std::ofstream ofs(output_file);
-    if (!ofs)
-    {
-        std::cerr << "Failed to open output file: " << output_file << std::endl;
-        return 1;
-    }
-
     // SSR object 
     SSR simulator;
     // Results vector that will hold the values of the state label 
     std::vector<int> results;
-
+    std::ostringstream filename;
+    filename << "out_N" << N << "_M" << max_iter << "_mu" << mu << ".bin";
+    std::ofstream fout(filename.str(), std::ios::binary);
     for (int i = 0; i < max_iter; ++i)
     {
         results=simulator.ssr_casc(N, mu);
         for(auto e:results)
         {
-            ofs<<e<<"\n";
+            // Writing the result in binary to save time :) 
+            // std::cout.write(reinterpret_cast<const char*>(&e), sizeof(int));
+            fout.write(reinterpret_cast<const char*>(&e), sizeof(int));
         }
         results.clear();
-
     }
-    ofs.close();
+    fout.close();
     return 0;
 }
