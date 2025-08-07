@@ -4,6 +4,28 @@
 
 This project implement the space pace reducing process using `C++` with `Python` binding. The implementation is based on the description in [Sample space reducing cascading processes produce the full spectrum of scaling exponents](https://arxiv.org/abs/1703.10100).
 
+[](./results/figures/gif/casecade_ssr.gif)
+> **Note:** The above animation was made using `SFML` and `Box2d` see  the repo [ssr animation](https://github.com/aredjil/ssr_anim) for the code :smiley:.
+## Requirements 
+
+- `cmake`
+- `GCC` or another `C++17-compatible` compiler
+- `Python` ≥ 3.8 (for visualization)
+  - `numpy`
+  - `matplotlib`
+  - `scipy`
+  - `pybind11`
+  - `jupyter`
+If you are using `conda` you can just run the following command to create `ssr_env` with requirements installed 
+
+```bash 
+bash> conda env create -f env.yaml
+```
+The, 
+
+```bash
+bash> conda activate ssr_env
+```
 ## Compling
 
 1. Clone the repo:
@@ -64,7 +86,7 @@ bash> ./main.x --n 10000 --m 3000 > output.txt
 
 ## Python Bindings
 
-This project includes Python bindings for the `C++` SSR simulator using `pybind11`. To build and use the bindings locally:
+This project includes Python bindings for the `C++` SSR simulator. To build and use the python module run: 
 ```bash 
 bash> python setup.py build_ext --inplace
 ```
@@ -86,3 +108,20 @@ if __name__ =="__main__":
 - Avoid naming conflicts with the `C++` `build/` directory by using separate environments or temporary folders if both `CMake` and `Python` builds are required.
 - Requires `Python ≥3.6`, `pybind11`, and a `C++17`-compatible compiler.
 
+## Reproducing Figures from Paper
+
+The `./scripts` directory contains several `Python` scripts to reproduce some of the figures from the paper mention in the [paper](https://arxiv.org/abs/1703.10100). 
+
+For instance to reproduce the first figure, first run the script 
+```bash
+bash> python ./scripts/convert_dataset.py
+```
+which will convert the data format from `.txt` to a compressed `.h5` this increases the visulization time, since the `.txt` files are huge in size. Afterwards, simply run
+
+```bash
+bash> python  ./scripts/py/plot_state_frequencies.py
+```
+to get the histogram of the state frequencies. The resulting figure is saved in [`./results/figure1/state_visits_relative_frequency.png`](./results/figures/figure1/state_visits_relative_frequency.png).
+
+Another example is figure 3. the [jupyter-notebook](./notebooks/notebook.ipynb) contains how to generate the figure 3 using the python module step by step.
+> **Note:** The simulation takes longer using python.

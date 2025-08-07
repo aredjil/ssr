@@ -8,6 +8,8 @@
 #include <cstdlib> 
 #include<chrono>
 #include <fstream>
+#include <sstream> // For file system mangement 
+#include <iomanip> // To edit the name of the file dpending on the parameters 
 
 int main(int argc, char **argv)
 {
@@ -32,6 +34,18 @@ int main(int argc, char **argv)
             mu = std::atof(argv[++i]);
         }
     }
+    std::ostringstream oss;
+    oss << "ssr_mu_" << std::fixed << std::setprecision(2) << mu
+        << "_n_" << N
+        << "_m_" << max_iter << ".txt";
+    std::string output_file = oss.str();
+    
+    std::ofstream ofs(output_file);
+    if (!ofs)
+    {
+        std::cerr << "Failed to open output file: " << output_file << std::endl;
+        return 1;
+    }
 
     // SSR object 
     SSR simulator;
@@ -43,13 +57,11 @@ int main(int argc, char **argv)
         results=simulator.ssr_casc(N, mu);
         for(auto e:results)
         {
-            std::cout<<e<<"\n";
+            ofs<<e<<"\n";
         }
-        std::cout.flush();
         results.clear();
 
     }
-
-
+    ofs.close();
     return 0;
 }

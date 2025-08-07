@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
 
-
 path = "./data"
 
 mus = [0.5, 1.0, 1.5]
