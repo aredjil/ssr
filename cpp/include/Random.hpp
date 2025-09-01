@@ -46,7 +46,7 @@ namespace Random
 	{
 		return std::uniform_real_distribution<T>{min, max}(mt);
 	}
-
+	
 	// -----------------------------
 	// Mixed-type version with explicit return type (e.g., Random::get<double>(0, 1))
 	// -----------------------------
