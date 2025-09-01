@@ -16,19 +16,19 @@ def main():
     root_path = Path(__file__).resolve().parent.parent.parent
     out_filename = root_path / "results" / "figures" / "figure1" / "state_visits_relative_frequency.png"
     obs_dir = root_path / "data" / "processed" / "hdf5" / "data_"
-    markers = [
-                "s",
-                "*", 
-                "*", 
-                "o", 
-                "^", 
-    ]
-    colors = ["darkblue", 
-              "blue", 
-              "green", 
-              "black", 
-              "red", 
-              ]
+        markers = [
+                    "s",
+                    "*", 
+                    "*", 
+                    "o", 
+                    "^", 
+        ]
+        colors = ["darkblue", 
+                "blue", 
+                "green", 
+                "black", 
+                "red", 
+                ]
     fig, axis = plt.subplots(nrows=1, ncols=1, figsize=(5, 5))
     for i, mu in enumerate([0.5, 
                             1.0, 
