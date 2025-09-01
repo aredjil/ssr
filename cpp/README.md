@@ -1,17 +1,16 @@
 # Sample Space Reducing Process 
 
-## Table of Content 
+## Table of Contents
 - [Introduction](#introduction)
 - [Sample Space Reducing Processes](#sample-space-reducing-processes)
-  - [Sample Space Reducing Processes](#sample-space-reducing-processes)
-  - [Sample Space Reducing Process Cascades](#sample-space-reducing-processes-cascades)
-  - [Noisy Sample Space Reducing Processes](#noisy-sample-space-reducing-processes)
-
+  - [Standard SSR](#standard-ssr)
+  - [Noisy SSR](#noisy-ssr)
+  - [SSR Cascades](#ssr-cascades)
 - [Conclusion](#conclusion)
-- [Refrences](#refrences)
+- [References](#references)
 - [Appendix](#appendix)
 
-## Introduction: 
+## Introduction 
 
 Many complex systems follow a ubiquitous pattern, namely power law,
 
@@ -19,261 +18,214 @@ $$
 P(R=r) \propto \frac{1}{r^{\alpha}}
 $$
 
-In language, this appears as Zipf's law: The frequency of occurance of a word in a corpus decreases as a power of their rank ($\alpha \approx 1$). In other words, a small set of words account for most of language usage, while the higher the rank the rarer it becomes, but not as rare as exponential decay would suggest, making the distrubution heavy-tailed. However, power laws are not unique to language, they are observed in many other phenomena, such as city sizes, earth quake magnitude, wealth distrubution, and severity of terrorist attacks.
+In language, this appears as **Zipf's law**: the frequency of occurrence of a word in a corpus decreases as a power of its rank ($\alpha \approx 1$). A small set of words accounts for most of language usage, while higher-rank words are rarer — but not as rare as exponential decay would suggest, making the distribution heavy-tailed.  
 
-<!-- NOTE: Decrease the size of the figure to something small that does not take the bulk of the document -->
+Power laws are not unique to language: they are observed in many other phenomena, such as city sizes, earthquake magnitudes, wealth distribution, and severity of terrorist attacks.
 
 <div style="text-align: center;">
     <img src="./results/figures/words_count_in_books.png" alt="Zipf's law" width="400">
-    <p><em>Zipf's law observed in word counts across 20 books. The books taken from <a href="https://www.gutenberg.org/">Project Gutenberg</a>, , and the results are fitted using powerlaw package [5]</a>.</em></p>
+    <p><em>Zipf's law observed in word counts across 20 books. Books taken from <a href="https://www.gutenberg.org/">Project Gutenberg</a>. Fit done using the <code>powerlaw</code> package [5].</em></p>
 </div>
 
-The origin of power laws is still debated, many attempts have been done to explain their emergence like Preferential attachment, Mandelbrot's Model, and  sample space reducing processes.
+The origin of power laws is still debated. Many attempts have been made to explain their emergence, including preferential attachment, Mandelbrot's model, and **sample space reducing processes**.
+
+---
 
 ## Sample Space Reducing Processes
 
-There are many flavors of SSR process, each producing a range of power laws, they are all charchterized by a shrinking sample sapce $\Omega$. In the following subsections I will present three SSR proceses, namely: standard SSR, noisy SSR, and SSR cascade. And show the results of the numerical simulations. 
+SSR processes come in several flavors, all producing a range of power laws. They are characterized by a shrinking sample space $\Omega$. Below I present three versions: standard SSR, noisy SSR, and SSR cascades, with numerical simulations.
 
 ### Standard SSR
 
-The standard SSR $\phi$ is defined on a sample space with $N$ states $\Omega = \{N, \dots, 1\}$, each with a prior probability $\pi_i$ of appearing. The process starts at $X_0=N$, at each discrete time step $t>0$ the process jumps randomly following a transition probability $P(X_{t+1}=i\mid X_{t} =j) = p(i \mid j)$ to lower states $j < i$, where upward jumps are forbidden. When the process reaches the states $X_{t>0} = 1$ the process either stops or restarts. 
+The standard SSR $\phi$ is defined on a sample space with $N$ states $\Omega = \{N, \dots, 1\}$, each with prior probability $\pi_i$. The process starts at $X_0 = N$. At each step $t>0$, it jumps randomly to a lower state $i < j$ according to transition probability $P(X_{t+1}=i \mid X_t=j) = p(i\mid j)$. Upward jumps are forbidden.  
 
-The process is charchterized by a shrinking samples, where the cardinality of the space is  
+When the process reaches $X_t = 1$, it either stops or restarts.  
 
-$$
-\mid \Omega_1 \mid <  \mid \Omega_2 \mid < \dots < \mid \Omega \mid 
-$$ 
-
-
-And the strcutre is nested 
+The sample space shrinks:
 
 $$
-\Omega_1 \subset \dots \subset \Omega_i \subset \Omega
+|\Omega_1| < |\Omega_2| < \dots < |\Omega|
 $$
 
-Conceptually, one can imagine a staircase with $N$, the ball starts at the highest step $N$ and can only move downward until it reaches the last step, where the process either stops or restarts. 
+and is nested:
+
+$$
+\Omega_1 \subset \dots \subset \Omega_i \subset \Omega.
+$$
+
+Conceptually: imagine a staircase with $N$ steps. A ball starts at the top and can only move downward until reaching the last step.
 
 <div style="text-align: center;">
-    <img src="./results/figures/gif/std_ssr.gif" alt="Zipf's law" width="400">
-    <p><em>SSR animation, showing the stair case pictorial formulation using a unifrom one-jump kernel and prior.</em></p>
+    <img src="./results/figures/gif/std_ssr.gif" alt="Standard SSR" width="400">
+    <p><em>SSR animation: the staircase formulation with a uniform one-jump kernel and prior.</em></p>
 </div>
 
-
-It has been shown that the probability of visiting the state $i$ is an exact Zipf's law [[1](https://arxiv.org/pdf/1407.2775)]. 
+It has been shown that the probability of visiting state $i$ is exactly Zipf's law [[1](https://arxiv.org/pdf/1407.2775)]:
 
 $$
-p(i) =  i^{-1}
+p(i) = i^{-1}.
 $$
-
 
 <div style="text-align: center;">
-    <img src="./results/ssr_graph_3.png" alt="3Ns" width="400">
+    <img src="./results/ssr_graph_3.png" alt="SSR paths for 3 states" width="400">
     <p><em>SSR for 3 states showing the different paths of the process.</em></p>
 </div>
 
-In the case of langauge, sentence formation is constrained by the language grammar. At the start of the document, one can use any word corresponding to the intial sample space, once a word is chosen the next word choice is constrained by the grammar of the  language, writer's style, ... etc. Which suggest that the emergence of Zipf's law in language is due the nested structure of possible words.
+In language, sentence formation is constrained by grammar: the first word comes from the full space, but each subsequent word reduces the possible choices. This nested structure suggests Zipf’s law emerges naturally.
 
-**Results:**
+**Results**
 
-The numerical simulation confirms this result: running the standard SSR process with $N = 10^4$ states for \(M = 10^6\) restarts produces a histogram of visits that visually resembles a power law, and fitting the data using MLE [[2](https://arxiv.org/abs/0706.1062)] suggests that Zipf's law is a good fit, which is further supported when visualizing the word counts in *Moby-Dick* alongside the SSR process with $10^4$ states and $2 \times 10^4$ restarts.
+Running the standard SSR with $N=10^4$ states and $M=10^6$ restarts produces a histogram that fits Zipf's law. Fitting with MLE [[2](https://arxiv.org/abs/0706.1062)] confirms the power-law fit, consistent with word counts in *Moby-Dick*.
 
 <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
 
   <div style="text-align: center;">
     <img src="./results/figures/std_fit.png" alt="SSR fit" width="400">
-    <p><em>Zipf's law observed in SSR state visits frequency.</em></p>
+    <p><em>Zipf's law observed in SSR state visit frequencies.</em></p>
   </div>
 
   <div style="text-align: center;">
     <img src="./results/figures/moby_word_ssr.png" alt="Moby-Dick Word SSR" width="400">
-    <p><em>Word count and SSR state counts vs rank</em></p>
+    <p><em>Word counts in <em>Moby-Dick</em> vs SSR state counts.</em></p>
   </div>
 </div>
 
+I also found that the state visit distribution is sensitive to the transition probability $p(i\mid j)$.  
 
-I found numerically that the shape of the state visits distrubution is senstive to the choice of the transition probability $p(i \mid j)$, where in the first expriment I used a gap based transition $p(i \mid j) \propto (j-i)^\alpha$ where the jumps depends on the distance between the current state $X_{t} =j$ and the next state $X_{t+1} = i$ where the exponent $\alpha$ controls perfered states,
+- With a gap-based transition $p(i \mid j) \propto (j-i)^\alpha$:  
+  - $\alpha = 0$: standard SSR, exact Zipf’s law.  
+  - $\alpha > 0$: higher states preferred.  
+  - $\alpha < 0$: lower states preferred.  
 
-- $\alpha = 0$ The process reduces to the standard SSR with perfect Zipf's law
-- $\alpha > 0$ Higher states are prefered. 
-- $\alpha <0$   Lower states are prefered. 
+Fitting shows truncated power-law behavior.
 
-Fitting the data using MLE shows that the distrubution follows a truncated power law with exponent $-1$. 
-
-  <div style="text-align: center;">
-    <img src="./results/truncated_powerlaw.png" alt="non-uniform pij" width="400">
-    <p><em>SSR state counts vs rank using a non-uniform transition.</em></p>
-  </div>
+<div style="text-align: center;">
+    <img src="./results/truncated_powerlaw.png" alt="Non-uniform pij" width="400">
+    <p><em>SSR state counts vs rank with gap-based non-uniform transition.</em></p>
 </div>
 
-In another expriement I used the softmax as a transition probability $p(i\mid j) \propto e^{-\beta i}$. 
+With softmax transitions $p(i \mid j) \propto e^{-\beta i}$:
 
-- $\beta = 0$ Transitions are uniform, $p(i) = i^{-1}$
-- $\beta < 0$ Transitions favor lower states.  
-- $\beta > 0$ Transitions favor higher states.  
+- $\beta = 0$: uniform transitions, $p(i)=i^{-1}$  
+- $\beta < 0$: lower states favored  
+- $\beta > 0$: higher states favored  
 
-
-  <div style="text-align: center;">
-    <img src="./results/exp_ssr.png" alt="Exp pij" width="400">
-    <p><em>SSR state counts vs rank using a non-uniform transition.</em></p>
-  </div>
+<div style="text-align: center;">
+    <img src="./results/exp_ssr.png" alt="Exponential pij" width="400">
+    <p><em>SSR state counts vs rank with exponential transition probabilities.</em></p>
 </div>
 
-When using uniform prior and transitions, stadard SSR generates perfect *Zipf's law*. However, numerical results show that the process is senstive to transition probability.  In the case of using a gap based transition the distrubution follows a truncated power law instead. 
+**Summary:** Uniform prior + uniform transitions → perfect Zipf’s law. Non-uniform transitions → deviations (truncated power laws).
+
+---
 
 ### Noisy SSR 
 
-Now let us consider another variation of SSR where noise is incorporated. Noisy SSR $\mathbf{\Phi}^{(\lambda)}$ is a mixture of the standard SSR $\phi$ with an unconstrained random walk $\phi_R$, according to a mixture parameter $\lambda \in [0, 1]$ which controls the noise strength, 
+A noisy SSR $\mathbf{\Phi}^{(\lambda)}$ mixes standard SSR $\phi$ with an unconstrained random walk $\phi_R$, via $\lambda \in [0,1]$:
 
 $$
-\mathbf{\Phi}^{(\lambda)} = \lambda \phi + (1-\lambda) \phi_R
+\mathbf{\Phi}^{(\lambda)} = \lambda \phi + (1-\lambda) \phi_R.
 $$
 
-It is clear that, 
+- $\lambda = 1$: pure SSR  
+- $\lambda = 0$: pure random walk  
 
-- $\lambda = 0$ The process is identical to a standrd SSR
-- $\lambda = 1$ The porcess is the unconstrained random walk over the states
-
-In this formulation, the process has two options at each time step $t > 0$, to jump downward with probability $\lambda$ or to jump to any of the $N$ states with probability $1-\lambda$. The process keeps going untill the state $1$ is reached. In order to be able to study the stationary statstics of this process, we need to redfine the process $phi$ as $phi_{\infty}$ that is identical except at the state $1$ instead of stoping the process restarts at any one of the $N$ states. 
+To study stationary statistics, define $\phi_\infty$: the SSR that restarts at a random state after reaching 1. Then:
 
 $$
-\mathbf{\Phi}^{(\lambda)}_{\infty} = \lambda \phi_{\infty} + (1-\lambda) \phi_R
+\mathbf{\Phi}^{(\lambda)}_\infty = \lambda \phi_\infty + (1-\lambda)\phi_R.
 $$
 
-This tweal makes it possible to treat the process as stationary. We are intrested in the visiting probability $p^{(\lambda)}(i)$ which could be expressed as 
+We are interested in $p^{(\lambda)}(i)$:
 
 $$
-p^{(\lambda)}(i) = \sum\limits_{j=1}^{N}p(i \mid j)p^{(\lambda)}(j) 
+p^{(\lambda)}(i) = \sum_{j=1}^N p(i \mid j) p^{(\lambda)}(j).
 $$
 
-Where the traisntion probability $p(i \mid j)$ is expressed as 
+After simplification, one obtains the recursion:
 
 $$
-p(i \mid j) =
-\begin{cases}
-\dfrac{\lambda}{j-1} + \dfrac{1-\lambda}{N}, & i < j,\\[6pt]
-\dfrac{1-\lambda}{N}, & i \ge j > 1,\\[6pt]
-\dfrac{1}{N}, & j = i.
-\end{cases}
+p^{(\lambda)}(i+1) = \left(1+\frac{\lambda}{i}\right)^{-1} p^{(\lambda)}(i).
 $$
 
-Then,  
+Thus,
 
 $$
-p^{(\lambda)}(i) = \dfrac{1}{N}p^{(\lambda)}(1)+\sum\limits_{j=2}^{i}p(i \mid j) p^{(\lambda)}(j) + \sum\limits_{j=i+1}^{N}p(i \mid j) p^{(\lambda)}(j)
+\frac{p^{(\lambda)}(i)}{p^{(\lambda)}(1)} = \prod_{j=1}^{i-1}\left(1+\frac{\lambda}{j}\right)^{-1}.
 $$
 
-Pluggin in the different expression of the different state ranges we get,
+For large $i$, using $\log(1+\lambda/j) \approx \lambda/j$:
 
 $$
-\begin{align}
-p^{(\lambda)}(i) &= \dfrac{1}{N}p^{(\lambda)}(1)+\sum\limits_{j=2}^{i} ( \dfrac{\lambda}{j-1} + \dfrac{1-\lambda}{N} ) p^{(\lambda)}(j) + \sum\limits_{j=i+1}^{N}\dfrac{\lambda}{j-1} p^{(\lambda)}(j) \nonumber\\
-&= \dfrac{1-\lambda}{N}+ \dfrac{\lambda}{N}p^{(\lambda)}(1) +\sum\limits_{j=i+1}^{N}\dfrac{\lambda}{j-1} p^{(\lambda)}(j) \nonumber
-\end{align}
+p^{(\lambda)}(i) \propto i^{-\lambda}.
 $$
-
-Now substituing the value $i+1$ we get, 
-
-$$
-p^{(\lambda)}(i) = \dfrac{1-\lambda}{N}+ \dfrac{\lambda}{N}p^{(\lambda)}(1) +\sum\limits_{j=i+1}^{N}\dfrac{\lambda}{j-1} p^{(\lambda)}(j) 
-$$
-
-Which results in, 
-
-$$
-p^{(\lambda)}(i+1) - p^{(\lambda)}(i) = -\dfrac{\lambda}{i} p^{(\lambda)}(i+1) 
-$$
-
-Rearranging the results gives, 
-
-$$
-p^{(\lambda)}(i+1) = (1+\dfrac{\lambda}{i})^{-1}p^{(\lambda)}(i)
-$$
-
-
-$$
-\begin{align}
-\dfrac{p^{(\lambda)}(i)}{p^{(\lambda)}(1)} &= \prod_{j=1}^{i-1} (1+\dfrac{\lambda}{i})^{-1} \nonumber \\
-&= \exp{(-\sum\limits_{j=1}^{i-1}\log(1+\dfrac{\lambda}{i}))}\nonumber\\
-&\sim \exp{(-\sum\limits_{j=1}^{i-1}\dfrac{\lambda}{i})}\nonumber\\
-&\sim \exp{(-\lambda \log(i))}\nonumber
-\end{align}
-$$
-
-$$
-\boxed{p^{(\lambda)}(i) \propto i^{-\lambda}}
-$$
-
 
 **Results**
 
-Simualting the noisy SSR using $10^4$ states with $10^6$ runs we get that the numerical results are in accordance with the analytical solution. 
-
+Simulating the noisy SSR with $10^4$ states and $10^6$ runs confirms the analytical result.
 
 <div style="text-align: center;">
     <img src="./results/figures/noisy_fit.png" alt="Noisy SSR" width="400">
-    <p><em>Noisy SSR</em></p>
+    <p><em>Noisy SSR numerical fit.</em></p>
 </div>
 
+---
 
 ### SSR Cascades
 
-The SSR cascades is defined by $\mu$ balls starting at the top state $N$, jumping to any of the lower states, where each state has a unique prior probability of appearing, in the next jump each ball divides into $\mu$ new balls and jump any lower state with respect to their parent ball. The process continues untill all balls reach the terminal state $1$. 
+SSR cascades start with $\mu$ balls at the top state $N$. Each ball jumps to a lower state, then splits into $\mu$ new balls, repeating until all reach state 1.  
 
-The frequency of state visits has been found to follow a power law with $\mu \in [0, \infty]$ being the exponent [paper](https://arxiv.org/pdf/1703.10100). 
+The visit frequencies follow a power law with exponent $\mu$ [[3](https://arxiv.org/pdf/1703.10100)]:
 
 $$
-\boxed{p(i) \propto i^{-\mu}}
+p(i) \propto i^{-\mu}.
 $$
-
 
 <div style="text-align: center;">
     <img src="./results/figures/gif/casecade_ssr.gif" alt="Cascade SSR" width="400">
-    <p><em>An animation of the SSR Cascades with multiplicative factor of 2</em></p>
+    <p><em>SSR cascades with multiplicative factor 2.</em></p>
 </div>
 
+**Results**
 
-**Results:**
-
-For the numerical simulation the process starts with $1$ element at the top state $N$, at each time step the object divides into $\mu$ new balls, and the process reapeats untill all elements reach the state $1$. In the case where $\mu$ is a real number, we decompose it as $\mu = \lfloor \mu \rfloor + \delta$, with probability $\delta$ the element divdes into $\lfloor\mu\rfloor + 1$ objects and with probability $1-\delta$ the object divides into $\lfloor\mu\rfloor$ objects. 
-
-Numerical results support the analytical results: 
-
-$$
-p(i) \propto i^{\mu}
-$$
+Simulation matches theory. For real-valued $\mu$, decompose $\mu = \lfloor \mu \rfloor + \delta$ and randomize splitting accordingly.
 
 <div style="text-align: center;">
     <img src="./results/figures/figure1/state_visits_relative_frequency.png" alt="Cascade SSR" width="400">
-    <p><em>Cascade SSR using different values of the multiplicative factor.</em></p>
+    <p><em>Cascade SSR using different multiplicative factors.</em></p>
 </div>
 
-
-Defining the avalanche size $s$ as the number of elements produced by the SSR cascade $\phi^{(\mu)}$ that reachs the terminal state $1$, the cascade size dsitrubution $f(s)$ seems to follow a gamma distrubution $\Gamma$ [paper](https://www.nature.com/articles/s41598-017-09836-4).  
+Defining avalanche size $s$ as the number of balls reaching state 1, the distribution $f(s)$ follows a Gamma distribution [[paper](https://www.nature.com/articles/s41598-017-09836-4)]:
 
 $$
-f(s) \propto s^{\alpha -1}e^{-\lambda s}, <s> \propto \dfrac{N ^\mu}{e^{a\mu}}
+f(s) \propto s^{\alpha-1} e^{-\lambda s}, \quad \langle s \rangle \propto \frac{N^\mu}{e^{a\mu}}.
 $$
 
-The numerical results seem to agree. 
-
 <div style="text-align: center;">
-    <img src="./results/figures/figure3/avalanche_sizes_2.0.png" alt="Cascade SSR" width="400">
-    <p><em>Distrbution of of avalanche size using a multiplicative factor 2. And its gamma fit</em></p>
+    <img src="./results/figures/figure3/avalanche_sizes_2.0.png" alt="Cascade SSR Avalanche Sizes" width="400">
+    <p><em>Avalanche size distribution for $\mu=2$, with Gamma fit.</em></p>
 </div>
 
-
 <div style="text-align: center;">
-    <img src="./results/figures/figure3/average_size.png" alt="Cascade SSR" width="400">
-    <p><em>Avalanche size of Cascade SSR for different total number of states N vs the multiplicative factor.</em></p>
+    <img src="./results/figures/figure3/average_size.png" alt="Cascade SSR Avalanche Average" width="400">
+    <p><em>Average avalanche size vs multiplicative factor $\mu$ for different $N$.</em></p>
 </div>
+
+---
 
 ## Conclusion
 
+Sample space reducing processes offer a simple mechanism for the emergence of power laws.  
 
+- **Standard SSR** produces exact Zipf’s law.  
+- **Noisy SSR** yields tunable exponents $p(i)\propto i^{-\lambda}$.  
+- **SSR cascades** generalize further, giving $p(i)\propto i^{-\mu}$ with avalanche size statistics following Gamma distributions.  
 
-## Refrences 
+These processes provide an elegant, general explanation for power-law patterns.
 
-## References  
+---
+
+## References
 
 [1] [Sample space reducing cascading processes produce the full spectrum of scaling exponents](https://arxiv.org/abs/1602.05530)  
 Bernat Corominas-Murtra, Rudolf Hanel, Stefan Thurner  
@@ -284,94 +236,63 @@ Bernat Corominas-Murtra, Rudolf Hanel, Stefan Thurner
 [3] [Sample space reducing processes produce the full spectrum of scaling exponents](https://arxiv.org/abs/1703.10100)  
 Bernat Corominas-Murtra, Rudolf Hanel, Stefan Thurner  
 
-[4] [Power-law distributions in empirical data](https://arxiv.org/abs/0706.1062)
-Aaron Clauset, Cosma Rohilla Shalizi, M. E. J. Newman
+[4] [Power-law distributions in empirical data](https://arxiv.org/abs/0706.1062)  
+Aaron Clauset, Cosma Rohilla Shalizi, M. E. J. Newman  
 
-[5] [Powerlaw: a Python package for analysis of heavy-tailed distributions](https://arxiv.org/abs/1305.0215)
-Jeff Alstott, Ed Bullmore, Dietmar Plenz
+[5] [Powerlaw: a Python package for analysis of heavy-tailed distributions](https://arxiv.org/abs/1305.0215)  
+Jeff Alstott, Ed Bullmore, Dietmar Plenz  
 
+---
 
 ## Appendix 
 
-An alternative derivation of the state visits distrubution expression for a randomly chosen intial state values $X_0$ \in \Omega.  
+Alternative derivation of the state visit distribution for random initial state $X_0 \in \Omega$.  
 
-- $p(i|j)$ The one-jump transition probability from state $j$ to state $i$, it is uniform in the standard SSR: 
+- One-step transition probability:
   $$
-  p(i|j) =
+  p(i\mid j) =
   \begin{cases}
-  0, & j < i, \text{Upward transitions are unallowed,} \\[6pt]
-  \dfrac{1}{j-1}, & j > i, \text{Jump uniformly to lower states}.
+  0, & j < i, \\
+  \tfrac{1}{j-1}, & j > i.
   \end{cases}
   $$
-- $P(X_{0}) = \pi_j$ The probability of starting the process at state $j$ 
-- $P(X_{t>0}=i \mid X_{0}=j) = T(i \mid j)$ The probability of visiting a state $i$ if the process starts at $j$:
-
+- Prior: $P(X_0=j)=\pi_j$  
+- Visiting probability:
   $$
-  T(i \mid j) =
+  T(i\mid j) =
   \begin{cases}
-  1, & j = i,\\[6pt]
-  0, & j < i,\\[6pt]
-  \sum\limits_{k=1}^{j-1}p(k\mid j)T(i \mid k), & j > i.
+  1, & j=i, \\
+  0, & j<i, \\
+  \sum_{k=1}^{j-1} p(k\mid j)T(i\mid k), & j>i.
   \end{cases}
   $$
 
-In the case of uniform one-step jumps to lower states we can write the the transition probability $T(i\mid j)$ in a clean way. 
-
-For $j>i$ we have 
-
+Base case: $T(i\mid i)=1$. For $j=i+1$:
 $$
-\begin{align}
-T(i\mid j) &= \sum\limits_{k=1}^{j-1}p(k\mid j)T(i \mid k)\nonumber\\
-    &=\sum\limits_{k=1}^{j-1}\dfrac{1}{j-1}T(i \mid k)\nonumber\\
-\end{align}
+T(i\mid i+1)=\frac{1}{i}.
 $$
 
-The base case for which is $T(i\mid i) =1$. When we consider the case $j=i+1$
+By induction, same formula holds for $j>i$.  
+
+Thus the general visiting probability is
 
 $$
-\begin{align}
-T(i\mid i+1) &=\dfrac{1}{i} \sum\limits_{k=1}^{i}T(i \mid k)\nonumber\\
-T(i\mid i+1) &=\dfrac{1}{i} \nonumber
-\end{align}
-$$
-We get the last result because all terms are zero except for the term $T(i|i)$. 
-
-Following the same logic we can prove by induction that the same formula hold for $J > j$.
-
-The general expression of the visiting probability of state $i$ is then
-
-$$
-\boxed{p(i) = \pi_i + \sum\limits_{j=i+1}^{N}  \pi_j T(i \mid j)
-}
+\boxed{p(i) = \pi_i + \sum_{j=i+1}^N \pi_j T(i\mid j)}
 $$
 
-Clearly, the state visits probability depends on both the one-step transition probability and the prior $\pi_i$. 
-
-For the case of uniform one-step jumps over the lower state $p(i|j) = \dfrac{1}{j-1}$ the expression becomes explicitly dependent on the prior probability of starting at state $k$, $\pi_k$: 
+For uniform jumps $p(i\mid j)=1/(j-1)$:
 
 $$
-\boxed{p(i) = \pi_i + \dfrac{1}{i}\sum\limits_{j=i+1}^{N}  \pi_j} 
+\boxed{p(i) = \pi_i + \frac{1}{i}\sum_{j=i+1}^N \pi_j}
 $$
 
-We observe that the distrubution of state vists $p(i)$ depends on the prior probability $\mathbf{\pi}$ for large $i$. We distinguish two cases: 
+- If $\pi$ vanishes faster than $1/i$, then $p(i)\propto \pi_i$.  
+- If slower, $p(i)\propto 1/i$.  
 
-- $\pi$ vanishs faster than $\dfrac{1}{i}$ the probability follows the prior $p(i) \propto \pi_i$ 
-- $\pi$ vanishs slower than $\dfrac{1}{i}$ the probability of visits follows a power law $p(i) \propto \dfrac{1}{i}$.
-
-This result is in agreement with numerical results and previious [work](https://arxiv.org/pdf/1602.05530).  
-
-Taking the example of a uniform prior, $\pi_i=\dfrac{1}{N}$ the distrubution of state visits follows an exact power law $p(i) =\dfrac{1}{i}$. 
+For uniform prior $\pi_i=1/N$:
 
 $$
-\begin{align}
-p(i) &= \dfrac{1}{N} + \dfrac{1}{i}\sum\limits_{j=i+1}^{N}  \dfrac{1}{N} \nonumber \\
- &=  \dfrac{1}{N} \left(1 + \dfrac{1}{i}\sum\limits_{j=i+1}^{N}1\right)\nonumber 
-\end{align}
+p(i) = \frac{1}{N}\Big(1 + \frac{N-i}{i}\Big) = \frac{1}{i}.
 $$
 
-Which results in an exact Zipf's law
-
-$$
-\boxed{p(i) = \dfrac{1}{i}}
-$$
-
+Thus standard SSR with uniform prior yields exact Zipf’s law.
