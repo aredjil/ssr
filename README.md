@@ -243,5 +243,4 @@ Which will visulzie the distrubution of state visits.
 - Implementing different priors of states (e.g., exponential, polynomial, )
 
 
-> **Note:** For large simulations (high number of states/multiplicative factor) it is better to use the `C++` code. Since most likely the `Pyhton` code will break because of high memory usage. It is here only for demo purposes. 
 > **Note:** The seeding is done in `Random.hpp` header.

@@ -107,7 +107,6 @@ Fitting shows truncated power-law behavior.
 With softmax transitions $p(i \mid j) \propto e^{-\beta i}$:
 
 - $\beta = 0$: uniform transitions, $p(i)=i^{-1}$  
-- $\beta < 0$: lower states favored  
 - $\beta > 0$: higher states favored  
 
 <div style="text-align: center;">
